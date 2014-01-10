@@ -1,0 +1,43 @@
+version=1
+#time to check if the config file exists
+if [ ! -e ~/.minecraft ] ; then
+	mkdir ~/.minecraft
+fi
+
+if [ ! -e ~/.minecraft/launcher.cfg ] ; then #gets if you have the config installed or not
+	echo -e "launcher=/usr/local/games/minecraft/minecraft.jar" > ~/.minecraft/launcher.cfg
+fi
+
+if [ -z $1 ]; then #This test to see if there are any launch options
+	. ~/.minecraft/launcher.cfg
+	java -jar $launcher
+elif [ $1 = "-ender" ] ; then
+	if [ -e $2 ] ; then
+	java -jar /usr/local/games/minecraft/extureender.jar $2
+	else
+	echo -e "file not found"
+	fi
+elif [ $1 = "-unstich" ] ; then #runs the unsticher program
+
+	if [ -e $2 ] ; then
+	java -jar /usr/local/games/minecraft/unsticher.jar $2
+	else
+	echo -e "file not found"
+	fi
+elif [ $1 = "-update" ] ; then #test for root acess and downloads the new launcher
+	roottest=`whoami`
+	if [ $roottest != "root" ] ; then 
+		echo -e "You must be root to update the launcher"
+	else
+		mv /usr/local/games/minecraft/minecraft.jar /usr/local/games/minecraft/minecraft.jar.old
+		wget -O /usr/local/games/minecraft/minecraft.jar https://s3.amazonaws.com/Minecraft.Download/launcher/Minecraft.jar
+	fi
+elif [ $1 = "-help" ] ; then
+	echo -e "The commands for this launcher are-\n-ender used to convert texture packs to resource packs\n-unstich used for converting older texture packs to newere verions\n-update grabs a new launcher"
+
+elif [ $1 = "-version" ] ; then
+	echo $version
+else
+	echo "$1 command not found"
+
+fi
