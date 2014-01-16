@@ -2,7 +2,7 @@ minecraft_linux_shell
 =====================
 ---Requires---
 
-Java
+Java   
 wget, I'm not sure if it is installed by default.
 
 ---Instilation---
