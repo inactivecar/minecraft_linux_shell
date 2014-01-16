@@ -1,14 +1,18 @@
 minecraft_linux_shell
 =====================
+---Requires---
+Java
+wget, I'm not sure if it is installed by default.
 
-A minecraft shell command
+---Instilation---
+run the minecraft_installer.sh it will download the nessasary files, as I am not allowed to distribute them.
 
-Yeah not really sure what to put here.
+---Usage---
+Running without options will have it load up the defualt launcher, which can be modified in the launcher.cfg in you .minecraft folder.
 
-the minecraft.sh installs minecraft to your linux machine. 
+run with -help to view a full list of commands.
 
-command line can take a few options.
-
-Running it with no options will just start the game.
-
-try minecraft -help for all of the options.
+--To do--
+Allow updating of the launcher.cfg as an option.
+auto complete.
+maybe figure out a way to update skins.
