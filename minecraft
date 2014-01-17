@@ -1,4 +1,4 @@
-version=1
+version=1.1
 #time to check if the config file exists
 if [ ! -e ~/.minecraft ] ; then
 	mkdir ~/.minecraft
@@ -10,7 +10,11 @@ fi
 
 if [ -z $1 ]; then #This test to see if there are any launch options
 	. ~/.minecraft/launcher.cfg
+	if [ ! -e $launcher ] ; then
+		echo "File not found, Please check the path in launcher.cfg"
+	else
 	java -jar $launcher
+	fi
 elif [ $1 = "-ender" ] ; then
 	if [ -e $2 ] ; then
 	java -jar /usr/local/games/minecraft/extureender.jar $2
@@ -37,7 +41,8 @@ elif [ $1 = "-help" ] ; then
 
 elif [ $1 = "-version" ] ; then
 	echo $version
+
 else
-	echo "$1 command not found"
+	echo "$1 command not found try -help for help"
 
 fi
