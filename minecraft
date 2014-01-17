@@ -11,7 +11,7 @@ fi
 if [ -z $1 ]; then #This test to see if there are any launch options
 	. ~/.minecraft/launcher.cfg
 	if [ ! -e $launcher ] ; then
-		echo "File not found, Please check the path in launcher.cfg"
+		echo "File not found, Please check the path in launcher.cfgs"
 	else
 	java -jar $launcher
 	fi
