@@ -8,41 +8,47 @@ if [ ! -e ~/.minecraft/launcher.cfg ] ; then #gets if you have the config instal
 	echo -e "launcher=/usr/local/games/minecraft/minecraft.jar" > ~/.minecraft/launcher.cfg
 fi
 
-if [ -z $1 ]; then #This test to see if there are any launch options
-	. ~/.minecraft/launcher.cfg
-	if [ ! -e $launcher ] ; then
-		echo "File not found, Please check the path in launcher.cfgs"
-	else
-	java -jar $launcher
-	fi
-elif [ $1 = "-ender" ] ; then
-	if [ -e $2 ] ; then
-	java -jar /usr/local/games/minecraft/extureender.jar $2
-	else
-	echo -e "file not found"
-	fi
-elif [ $1 = "-unstich" ] ; then #runs the unsticher program
-
-	if [ -e $2 ] ; then
-	java -jar /usr/local/games/minecraft/unsticher.jar $2
-	else
-	echo -e "file not found"
-	fi
-elif [ $1 = "-update" ] ; then #test for root acess and downloads the new launcher
-	roottest=`whoami`
-	if [ $roottest != "root" ] ; then 
-		echo -e "You must be root to update the launcher"
-	else
-		mv /usr/local/games/minecraft/minecraft.jar /usr/local/games/minecraft/minecraft.jar.old
-		wget -O /usr/local/games/minecraft/minecraft.jar https://s3.amazonaws.com/Minecraft.Download/launcher/Minecraft.jar
-	fi
-elif [ $1 = "-help" ] ; then
-	echo -e "The commands for this launcher are-\n-ender used to convert texture packs to resource packs\n-unstich used for converting older texture packs to newere verions\n-update grabs a new launcher"
-
-elif [ $1 = "-version" ] ; then
-	echo $version
-
-else
-	echo "$1 command not found try -help for help"
-
-fi
+while getopts -e:-u:-U:-h:-v opt; do
+ 	case $opt in
+ 	-e)
+ 		if [ -e "$2" ] ; then
+ 			java -jar /usr/local/games/minecraft/extureender.jar "$2"
+ 		else
+ 			echo -e "$2 not found"
+ 		fi
+ 		;;
+ 	-u)
+ 		if [ -e "$2" ]; then
+ 			java -jar /usr/local/games/minecraft/unsticher.jar "$2"
+ 		else
+ 			echo -e "$2 not found"
+ 		fi
+ 		;;
+ 	-U)
+ 		if [ $UID -ne 0 ] ; then 
+			echo -e "You must be root to update the launcher"
+		else
+			mv /usr/local/games/minecraft/minecraft.jar /usr/local/games/minecraft/minecraft.jar.old
+			wget -O /usr/local/games/minecraft/minecraft.jar https://s3.amazonaws.com/Minecraft.Download/launcher/Minecraft.jar
+		fi
+		;;
+	-h)
+		echo -e "The commands for this launcher are-\n
+		-e <file>\t Used to convert texture packs to resource packs\n
+		-u <file>\t Used for converting older texture packs to newere verions\n
+		-U\t Grabs a new launcher\n
+		-h\t Display this help"
+		;;
+	-v)
+		echo $version
+		;;
+	*)
+		. ~/.minecraft/launcher.cfg
+		if [ ! -e "$launcher" ] ; then
+			echo "File not found, Please check the path in launcher.cfgs"
+		else
+			java -jar "$launcher"
+		fi
+		;;
+	esac
+done
