@@ -11,18 +11,18 @@ fi
 while getopts "euUhv" opt; do
  	case $opt in
  	e)
- 		if [ -e "$3" ] ; then
- 			java -jar /usr/local/games/minecraft/extureender.jar "$3"
+ 		if [ -e "$2" ] ; then
+ 			java -jar /usr/local/games/minecraft/extureender.jar "$2"
  		else
- 			printf "$3 not found %s\n"
+ 			printf "$2 not found %s\n"
 			exit 1
  		fi
  		;;
  	u)
- 		if [ -e "$3" ]; then
- 			java -jar /usr/local/games/minecraft/unsticher.jar "$3"
+ 		if [ -e "$2" ]; then
+ 			java -jar /usr/local/games/minecraft/unsticher.jar "$2"
  		else
- 			printf "$3 not found %s\n"
+ 			printf "$2 not found %s\n"
 			exit 1
  		fi
  		;;
