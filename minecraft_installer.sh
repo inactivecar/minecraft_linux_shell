@@ -1,11 +1,11 @@
 #!/bin/bash 
 declare -i version
-version=$("./minecraft -version")
+version=`./minecraft -v`
 
 installminecraft() {
-		echo "creating directorys"
+		printf "creating directorys %s\n"
 		mkdir -p /usr/local/games/minecraft #the downloading bit of the script. 
-		echo "grabbing launcher"
+		printf "grabbing launcher %s\n"
 		wget -O /usr/local/games/minecraft/minecraft.jar https://s3.amazonaws.com/Minecraft.Download/launcher/Minecraft.jar
 		wget -O /usr/share/pixmaps/minecraft.png http://media-mcw.cursecdn.com/c/c5/Grass.png
 		wget -O /usr/local/games/minecraft/textureender.jar https://s3.amazonaws.com/Minecraft.Download/utilities/TextureEnder.jar
@@ -18,16 +18,16 @@ installminecraft() {
 }
 
 upgrademinecraft() {
-	versioninstalled=$(/usr/games/minecraft -version)
-	mv /usr/games/minecraft "./minecraft.$versioninstalled"
-	cp ./minecraft /usr/games/
+	versioninstalled=`/usr/games/minecraft -version`
+	mv /usr/games/minecraft "$PWD/minecraft.$versioninstalled"
+	cp $PWD/minecraft /usr/games/
 	echo "Upgrade Complete"
 }
 
 if [[ $UID -eq 0 ]] ; then #checks for root 
-	versioninstalled=$(/usr/games/minecraft -version)
+	
 	if [ -e "/usr/local/games/minecraft" ] ; then #testing to see if you have minecraft  installed already
-
+			versioninstalled=`/usr/games/minecraft -v`
 			if [[ $versioninstalled -ge $version ]] ; then
 				echo "No need to install or update"
 
