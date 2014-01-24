@@ -5,50 +5,53 @@ if [ ! -e ~/.minecraft ] ; then
 fi
 
 if [ ! -e ~/.minecraft/launcher.cfg ] ; then #gets if you have the config installed or not
-	echo -e "launcher=/usr/local/games/minecraft/minecraft.jar" > ~/.minecraft/launcher.cfg
+	printf "launcher=/usr/local/games/minecraft/minecraft.jar" > ~/.minecraft/launcher.cfg
 fi
 
-while getopts -e:-u:-U:-h:-v opt; do
+while getopts "euUhv" opt; do
  	case $opt in
- 	-e)
- 		if [ -e "$2" ] ; then
- 			java -jar /usr/local/games/minecraft/extureender.jar "$2"
+ 	e)
+ 		if [ -e "$3" ] ; then
+ 			java -jar /usr/local/games/minecraft/extureender.jar "$3"
  		else
- 			echo -e "$2 not found"
+ 			printf "$3 not found %s\n"
+			exit 1
  		fi
  		;;
- 	-u)
- 		if [ -e "$2" ]; then
- 			java -jar /usr/local/games/minecraft/unsticher.jar "$2"
+ 	u)
+ 		if [ -e "$3" ]; then
+ 			java -jar /usr/local/games/minecraft/unsticher.jar "$3"
  		else
- 			echo -e "$2 not found"
+ 			printf "$3 not found %s\n"
+			exit 1
  		fi
  		;;
- 	-U)
+ 	U)
  		if [ $UID -ne 0 ] ; then 
-			echo -e "You must be root to update the launcher"
+			printf "You must be root to update the launcher %s\n"
+			exit 1
 		else
 			mv /usr/local/games/minecraft/minecraft.jar /usr/local/games/minecraft/minecraft.jar.old
 			wget -O /usr/local/games/minecraft/minecraft.jar https://s3.amazonaws.com/Minecraft.Download/launcher/Minecraft.jar
 		fi
 		;;
-	-h)
-		echo -e "The commands for this launcher are-\n
-		-e <file>\t Used to convert texture packs to resource packs\n
-		-u <file>\t Used for converting older texture packs to newere verions\n
-		-U\t Grabs a new launcher\n
-		-h\t Display this help"
+	h)
+		printf "The commands for this launcher are- %s\n
+		-e <file>\t Used to convert texture packs to resource packs %s\n
+		-u <file>\t Used for converting older texture packs to newere verions %s\n
+		-U\t Grabs a new launcher %s\n
+		-h\t Display this help %s\n"
+		exit 0
 		;;
-	-v)
-		echo $version
-		;;
-	*)
-		. ~/.minecraft/launcher.cfg
+	v)
+		printf "$version %s\n"
+		exit 0
+	esac
+done
+
+. ~/.minecraft/launcher.cfg
 		if [ ! -e "$launcher" ] ; then
-			echo "File not found, Please check the path in launcher.cfgs"
+			printf "File not found, Please check the path in launcher.cfgs %s\n"
 		else
 			java -jar "$launcher"
 		fi
-		;;
-	esac
-done
