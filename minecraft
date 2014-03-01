@@ -1,4 +1,4 @@
-version=2
+version=1.1
 #time to check if the config file exists
 if [ ! -e ~/.minecraft ] ; then
 	mkdir ~/.minecraft
