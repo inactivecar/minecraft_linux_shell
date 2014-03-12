@@ -7,8 +7,9 @@ fi
 if [ ! -e ~/.minecraft/launcher.cfg ] ; then #gets if you have the config installed or not
 	printf "launcher=/usr/local/games/minecraft/minecraft.jar" > ~/.minecraft/launcher.cfg
 fi
+. ~/.minecraft/launcher.cfg
 
-while getopts "euUhv" opt; do
+while getopts "e:u:U:h:v:l" opt; do
  	case $opt in
  	e)
  		if [ -e "$2" ] ; then
@@ -43,13 +44,25 @@ while getopts "euUhv" opt; do
 		-h\t Display this help %s\n"
 		exit 0
 		;;
+	l) 
+		if [ -e "$2" ] ; then
+			printf "Switching launcher from $launcher to $2 %s\n"
+			cat ~/.minecraft/launcher.cfg | sed "s|$launcher|$2|"  > /tmp/launcher.cfg
+			mv /tmp/launcher.cfg ~/.minecraft/launcher.cfg
+			exit 0
+		else
+		printf "$2"
+			printf "File not found, aborting change.%s\n"
+			exit 1
+		fi			
+		;;
 	v)
 		printf "$version %s\n"
 		exit 0
 	esac
 done
 
-. ~/.minecraft/launcher.cfg
+
 		if [ ! -e "$launcher" ] ; then
 			printf "File not found, Please check the path in launcher.cfgs %s\n"
 		else
